@@ -1,13 +1,66 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:study_buddy/screens/auth/widgets/email_textfield.dart';
-import 'package:study_buddy/screens/auth/widgets/password_textfield.dart';
+import 'widgets/email_textfield.dart';
+import 'widgets/password_textfield.dart';
 
 import '../../const/route_const.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final loginEmail = "sudip@gmail.com";
+  final loginPasword = "sudip@123456";
+  bool incorrectCredential = false;
+  String? _emailErrorText;
+
+  String? _validateEmails(String? value) {
+    if (value!.isEmpty) {
+      return "Enter a email";
+    } else if (!isEmailValid(value)) {
+      return 'Enter a valid email address';
+    }
+    return null;
+  }
+
+  bool isEmailValid(String email) {
+    // Basic email validation using regex
+    // You can implement more complex validation if needed
+    return RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(email);
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate() &&
+        loginEmail == _emailController.text &&
+        loginPasword == _passwordController.text) {
+      Navigator.pushNamed(context, successScreenRoute);
+    } else if (_emailController.text.isEmpty &&
+            _passwordController.text.isEmpty ||
+        !isEmailValid(_emailController.text)) {
+      setState(() {
+        incorrectCredential = false;
+      });
+    } else {
+      setState(() {
+        incorrectCredential = true;
+      });
+    }
+  }
+
+  String? _validatePassword(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter a password!';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +82,7 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   backgroundColor: const Color(0xff2EC4B6)),
               //return false when click on "NO"
+
               child: const Text(
                 'No',
                 style: TextStyle(color: Color(0xffffffff)),
@@ -83,6 +137,7 @@ class LoginScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -99,7 +154,11 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 5.81,
                   ),
-                  const EmailTextfield(),
+                  EmailTextfield(
+                    controller: _emailController,
+                    errorTextValidator: _validateEmails,
+                    errorText: _emailErrorText,
+                  ),
                   const SizedBox(
                     height: 22.81,
                   ),
@@ -107,12 +166,20 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 5.81,
                   ),
-                  const PasswordTextfield(
+                  PasswordTextfield(
                     text: "Enter your password",
+                    controller: _passwordController,
+                    errorTextValidator: _validatePassword,
                   ),
                   const SizedBox(
                     height: 12.81,
                   ),
+                  incorrectCredential
+                      ? const Text(
+                          "Incorrect credentials, please enter valid username and password",
+                          style: TextStyle(color: Colors.red),
+                        )
+                      : const SizedBox(),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -136,9 +203,7 @@ class LoginScreen extends StatelessWidget {
                             backgroundColor: const Color(0xff2EC4B6),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
-                        onPressed: () {
-                          Navigator.pushNamed(context, successScreenRoute);
-                        },
+                        onPressed: _submitForm,
                         child: const Text(
                           "Log in",
                           style: TextStyle(color: Color(0xffffffff)),
@@ -203,7 +268,7 @@ class LoginScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.asset(
-                            "assets/images/facebook.png",
+                            "assets/images/google.png",
                             height: 33,
                           ),
                         ),
@@ -217,7 +282,7 @@ class LoginScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.asset(
-                            "assets/images/google.png",
+                            "assets/images/facebook.png",
                             height: 33,
                           ),
                         ),

@@ -149,6 +149,7 @@ class _SliderScreenState extends State<SliderScreen> {
                             Expanded(
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xffffffff),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),

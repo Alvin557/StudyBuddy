@@ -6,8 +6,46 @@ import 'package:study_buddy/screens/auth/login.dart';
 import 'widgets/email_textfield.dart';
 import 'widgets/password_textfield.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String? _emailErrorText;
+
+  String? _validateEmail(String? value) {
+    if (value!.isEmpty) {
+      return 'Email is required';
+    } else if (!isEmailValid(value)) {
+      return 'Enter a valid email address';
+    } else {
+      return null;
+    }
+  }
+
+  String? _validatePassword(String? value) {
+    if (value!.length < 10) {
+      return 'Must be more or equal to 10 character';
+    }
+  }
+
+  bool isEmailValid(String email) {
+    // Basic email validation using regex
+    // You can implement more complex validation if needed
+    return RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(email);
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      Navigator.pushNamed(context, successScreenRoute);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +72,7 @@ class SignUpScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -54,7 +93,11 @@ class SignUpScreen extends StatelessWidget {
                 const SizedBox(
                   height: 5.81,
                 ),
-                const EmailTextfield(),
+                EmailTextfield(
+                  controller: _emailController,
+                  errorTextValidator: _validateEmail,
+                  errorText: _emailErrorText,
+                ),
                 const SizedBox(
                   height: 22.81,
                 ),
@@ -62,8 +105,10 @@ class SignUpScreen extends StatelessWidget {
                 const SizedBox(
                   height: 5.81,
                 ),
-                const PasswordTextfield(
+                PasswordTextfield(
                   text: "Enter your password",
+                  controller: _passwordController,
+                  errorTextValidator: _validatePassword,
                 ),
                 const SizedBox(
                   height: 22.81,
@@ -72,8 +117,10 @@ class SignUpScreen extends StatelessWidget {
                 const SizedBox(
                   height: 5.81,
                 ),
-                const PasswordTextfield(
+                PasswordTextfield(
                   text: "Confirm your password",
+                  controller: _passwordController,
+                  errorTextValidator: _validatePassword,
                 ),
                 const SizedBox(
                   height: 12.81,
@@ -89,7 +136,9 @@ class SignUpScreen extends StatelessWidget {
                           backgroundColor: const Color(0xff2EC4B6),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
-                      onPressed: () {},
+                      onPressed: () {
+                        _submitForm();
+                      },
                       child: const Text(
                         "Create account",
                         style: TextStyle(color: Color(0xffffffff)),
