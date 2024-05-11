@@ -1,54 +1,32 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:study_buddy/const/route_const.dart';
-import 'package:study_buddy/screens/auth/login.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/email_textfield_bloc/email_text_field_bloc.dart';
+import 'bloc/submit_button/bloc/click_submit_button_bloc.dart';
+import '../../const/route_const.dart';
+import 'bloc/password_textfield_bloc/bloc/password_field_bloc.dart';
+import 'login.dart';
 
 import 'widgets/email_textfield.dart';
 import 'widgets/password_textfield.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({super.key});
 
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
-  String? _emailErrorText;
-
-  String? _validateEmail(String? value) {
-    if (value!.isEmpty) {
-      return 'Email is required';
-    } else if (!isEmailValid(value)) {
-      return 'Enter a valid email address';
-    } else {
-      return null;
-    }
-  }
-
-  String? _validatePassword(String? value) {
-    if (value!.length < 10) {
-      return 'Must be more or equal to 10 character';
-    }
-  }
-
-  bool isEmailValid(String email) {
-    // Basic email validation using regex
-    // You can implement more complex validation if needed
-    return RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(email);
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, successScreenRoute);
-    }
-  }
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    context.read<EmailTextFieldBloc>().add(ValidateEmailEvent(email: null));
+    context
+        .read<PasswordFieldBloc>()
+        .add(const ValidPasswordEvent(password: null));
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -95,8 +73,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 EmailTextfield(
                   controller: _emailController,
-                  errorTextValidator: _validateEmail,
-                  errorText: _emailErrorText,
                 ),
                 const SizedBox(
                   height: 22.81,
@@ -108,7 +84,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 PasswordTextfield(
                   text: "Enter your password",
                   controller: _passwordController,
-                  errorTextValidator: _validatePassword,
                 ),
                 const SizedBox(
                   height: 22.81,
@@ -119,8 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 PasswordTextfield(
                   text: "Confirm your password",
-                  controller: _passwordController,
-                  errorTextValidator: _validatePassword,
+                  controller: _confirmPasswordController,
                 ),
                 const SizedBox(
                   height: 12.81,
@@ -128,21 +102,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 12.81,
                 ),
-                SizedBox(
-                  height: 51.26,
-                  width: MediaQuery.of(context).size.width,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff2EC4B6),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      onPressed: () {
-                        _submitForm();
-                      },
-                      child: const Text(
-                        "Create account",
-                        style: TextStyle(color: Color(0xffffffff)),
-                      )),
+                BlocBuilder<ClickSubmitButtonBloc, ClickSubmitButtonState>(
+                  builder: (context, state) {
+                    return SizedBox(
+                      height: 51.26,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xff2EC4B6),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onPressed: () {
+                            context.read<ClickSubmitButtonBloc>().add(
+                                ClickSubmit(
+                                    confirmPassword:
+                                        _confirmPasswordController.text,
+                                    password: _passwordController.text,
+                                    email: _emailController.text));
+                            context.read<EmailTextFieldBloc>().add(
+                                ValidateEmailEvent(
+                                    email: _emailController.text));
+                            context.read<PasswordFieldBloc>().add(
+                                ValidPasswordEvent(
+                                    password: _emailController.text));
+                            context.read<PasswordFieldBloc>().add(
+                                ValidPasswordEvent(
+                                    password: _confirmPasswordController.text));
+                            if (state is ClickSubmitSuccess &&
+                                _formKey.currentState!.validate()) {
+                              Navigator.pushNamed(context, successScreenRoute);
+                            }
+                          },
+                          child: const Text(
+                            "Create account",
+                            style: TextStyle(color: Color(0xffffffff)),
+                          )),
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 25,

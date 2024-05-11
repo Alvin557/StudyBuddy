@@ -38,6 +38,10 @@ dependencies:
   flutter_screenutil: ^5.9.0
   shared_preferences: ^2.2.3
   confetti: ^0.7.0
+  bloc: ^8.1.4
+  provider: ^6.1.2
+  flutter_bloc: ^8.1.5
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:

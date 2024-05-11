@@ -1,66 +1,24 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'widgets/email_textfield.dart';
-import 'widgets/password_textfield.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../const/route_const.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+import 'bloc/email_textfield_bloc/email_text_field_bloc.dart';
+import 'bloc/password_textfield_bloc/bloc/password_field_bloc.dart';
+import 'bloc/submit_button/bloc/click_submit_button_bloc.dart';
+import 'widgets/email_textfield.dart';
+import 'widgets/password_textfield.dart';
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
-class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
-  final loginEmail = "sudip@gmail.com";
-  final loginPasword = "sudip@123456";
-  bool incorrectCredential = false;
-  String? _emailErrorText;
-
-  String? _validateEmails(String? value) {
-    if (value!.isEmpty) {
-      return "Enter a email";
-    } else if (!isEmailValid(value)) {
-      return 'Enter a valid email address';
-    }
-    return null;
-  }
-
-  bool isEmailValid(String email) {
-    // Basic email validation using regex
-    // You can implement more complex validation if needed
-    return RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(email);
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate() &&
-        loginEmail == _emailController.text &&
-        loginPasword == _passwordController.text) {
-      Navigator.pushNamed(context, successScreenRoute);
-    } else if (_emailController.text.isEmpty &&
-            _passwordController.text.isEmpty ||
-        !isEmailValid(_emailController.text)) {
-      setState(() {
-        incorrectCredential = false;
-      });
-    } else {
-      setState(() {
-        incorrectCredential = true;
-      });
-    }
-  }
-
-  String? _validatePassword(String? value) {
-    if (value!.isEmpty) {
-      return 'Please enter a password!';
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +114,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   EmailTextfield(
                     controller: _emailController,
-                    errorTextValidator: _validateEmails,
-                    errorText: _emailErrorText,
                   ),
                   const SizedBox(
                     height: 22.81,
@@ -169,17 +125,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   PasswordTextfield(
                     text: "Enter your password",
                     controller: _passwordController,
-                    errorTextValidator: _validatePassword,
                   ),
                   const SizedBox(
                     height: 12.81,
                   ),
-                  incorrectCredential
-                      ? const Text(
-                          "Incorrect credentials, please enter valid username and password",
-                          style: TextStyle(color: Colors.red),
-                        )
-                      : const SizedBox(),
+                  BlocBuilder<ClickLoginSubmitButtonBloc,
+                      ClickLoginSubmitButtonState>(
+                    builder: (context, state) {
+                      return state.props.first!
+                          ? const Text(
+                              "Incorrect credentials, please enter valid username and password",
+                              style: TextStyle(color: Colors.red),
+                            )
+                          : const SizedBox();
+                    },
+                  ),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -203,7 +163,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             backgroundColor: const Color(0xff2EC4B6),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
-                        onPressed: _submitForm,
+                        onPressed: () {
+                          context.read<EmailTextFieldBloc>().add(
+                              ValidateEmailEvent(email: _emailController.text));
+                          context.read<PasswordFieldBloc>().add(
+                              ValidPasswordEvent(
+                                  password: _passwordController.text));
+                          context.read<ClickLoginSubmitButtonBloc>().add(
+                              ClickLoginSubmitButtonEvent(
+                                  email: _emailController.text,
+                                  password: _passwordController.text));
+                        },
                         child: const Text(
                           "Log in",
                           style: TextStyle(color: Color(0xffffffff)),
@@ -223,8 +193,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Color(0xff858597), fontSize: 14)),
                           TextSpan(
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () => Navigator.pushNamed(
-                                    context, signUpScreenRoute),
+                                ..onTap = () {
+                                  Navigator.pushNamed(
+                                      context, signUpScreenRoute);
+                                  context
+                                      .read<EmailTextFieldBloc>()
+                                      .add(ValidateEmailEvent(email: null));
+                                  context.read<PasswordFieldBloc>().add(
+                                      const ValidPasswordEvent(password: null));
+                                },
                               text: "Sign up",
                               style: const TextStyle(
                                   fontSize: 14, color: Color(0xff2EC4B6)))

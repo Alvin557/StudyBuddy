@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy/screens/auth/signup.dart';
-import 'package:study_buddy/screens/auth/success.dart';
+import '../screens/auth/signup.dart';
+import '../screens/auth/success.dart';
 import '../screens/auth/login.dart';
 import '../screens/welcome/splash_screen/splash_screen.dart';
 import '../const/route_const.dart';
@@ -14,9 +14,9 @@ class StudyBuddyRoute {
       case splashScreenRoute:
         return _getPageRoute(const SplashScreen());
       case loginScreenRoute:
-        return _getPageRoute(const LoginScreen());
+        return _getPageRoute(LoginScreen());
       case signUpScreenRoute:
-        return _getPageRoute(const SignUpScreen());
+        return _getPageRoute(SignUpScreen());
       case successScreenRoute:
         return _getPageRoute(const SuccessScreen());
     }
