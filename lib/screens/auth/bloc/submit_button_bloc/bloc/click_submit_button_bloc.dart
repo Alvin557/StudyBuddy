@@ -18,6 +18,8 @@ class ClickSubmitButtonBloc
           event.email!.isNotEmpty &&
           isEmailValid(event.email!)) {
         emit(ClickSubmitSuccess());
+      } else {
+        emit(ClickSubmitFailure());
       }
     });
   }
@@ -25,24 +27,29 @@ class ClickSubmitButtonBloc
 
 class ClickLoginSubmitButtonBloc
     extends Bloc<ClickLoginSubmitButtonEvent, ClickLoginSubmitButtonState> {
-  ClickLoginSubmitButtonBloc() : super(ClickLoginSubmitButtonInitial()) {
-    on<ClickLoginSubmitButtonEvent>((event, emit) {
+  ClickLoginSubmitButtonBloc()
+      : super(const ClickLoginSubmitButtonInitial(success: false)) {
+    on<ClickLoginSubmit>((event, emit) {
       bool incorrectCredential = false;
       const loginEmail = "sudip@gmail.com";
       const loginPasword = "sudip@123456";
+
       bool isEmailValid(String email) {
         // Basic email validation using regex
         // You can implement more complex validation if needed
         return RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(email);
       }
 
-      if (loginEmail == event.email && loginPasword == event.password) {
+      if (event.email == null && event.password == null) {
+        emit(CLickLoginSubmitButton(success: incorrectCredential));
+      } else if (loginEmail == event.email && loginPasword == event.password) {
+        emit(const ClickLoginSubmitSuccess(success: true));
       } else if (event.email!.isEmpty ||
           event.password!.isEmpty ||
           !isEmailValid(event.email!)) {
-        emit(CLickLoginSubmitButtonError(success: incorrectCredential));
+        emit(CLickLoginSubmitButton(success: incorrectCredential));
       } else {
-        emit(CLickLoginSubmitButtonError(success: !incorrectCredential));
+        emit(CLickLoginSubmitButton(success: !incorrectCredential));
       }
     });
   }

@@ -19,7 +19,6 @@ class _SuccessScreenState extends State<SuccessScreen> {
   void initState() {
     super.initState();
     controller.play();
-    print("controller");
   }
 
   @override

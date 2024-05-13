@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
+import '../const/route_const.dart';
+import '../screens/auth/login.dart';
 import '../screens/auth/signup.dart';
 import '../screens/auth/success.dart';
-import '../screens/auth/login.dart';
-import '../screens/welcome/splash_screen/splash_screen.dart';
-import '../const/route_const.dart';
 import '../screens/slider/slider_screen.dart';
+import '../screens/welcome/splash_screen/splash_screen.dart';
 
 class StudyBuddyRoute {
   static Route<dynamic>? generateRoute(RouteSettings settings) {

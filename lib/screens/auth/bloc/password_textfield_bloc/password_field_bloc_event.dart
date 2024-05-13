@@ -12,14 +12,8 @@ class ValidPasswordEvent extends PasswordFieldBlocEvent {
   const ValidPasswordEvent({required this.password});
 }
 
-class PasswordIconBlocEvent extends Equatable {
-  const PasswordIconBlocEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class PasswordIconClickedEvent extends PasswordIconBlocEvent {
-  final bool? state;
-  const PasswordIconClickedEvent({required this.state});
+class ValidSignUpPasswordEvent extends PasswordFieldBlocEvent {
+  final String? password;
+  final String? confirmPassword;
+  const ValidSignUpPasswordEvent({this.password, this.confirmPassword});
 }

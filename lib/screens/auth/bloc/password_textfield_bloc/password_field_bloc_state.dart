@@ -2,7 +2,8 @@ part of 'password_field_bloc.dart';
 
 sealed class PasswordFieldBlocState extends Equatable {
   final String? value;
-  const PasswordFieldBlocState({required this.value});
+  final String? confirmPassword;
+  const PasswordFieldBlocState({required this.value, this.confirmPassword});
 
   @override
   List<String?> get props => [value];
@@ -24,19 +25,6 @@ final class PasswordFieldSuccess extends PasswordFieldBlocState {
   const PasswordFieldSuccess({required super.value});
 }
 
-class PasswordIconBlocState extends Equatable {
-  final bool? clickedState;
-
-  const PasswordIconBlocState({required this.clickedState});
-
-  @override
-  List<bool?> get props => [clickedState];
-}
-
-class PasswordIconClickedState extends PasswordIconBlocState {
-  const PasswordIconClickedState({required super.clickedState});
-}
-
-class PasswordIconInitialState extends PasswordIconBlocState {
-  const PasswordIconInitialState({required super.clickedState});
+final class PasswordFaildMatch extends PasswordFieldBlocState {
+  const PasswordFaildMatch({required super.value});
 }

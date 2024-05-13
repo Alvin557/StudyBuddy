@@ -19,7 +19,7 @@ class EmailTextfield extends StatelessWidget {
           controller: controller,
           decoration: InputDecoration(
             hintText: "Enter your email ",
-            errorText: state.props.first,
+            errorText: state.value,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             focusedBorder: OutlineInputBorder(
