@@ -4,6 +4,7 @@ import '../const/route_const.dart';
 import '../screens/auth/login.dart';
 import '../screens/auth/signup.dart';
 import '../screens/auth/success.dart';
+import '../screens/bottom_navigation/bottom_navigation.dart';
 import '../screens/slider/slider_screen.dart';
 import '../screens/welcome/splash_screen/splash_screen.dart';
 
@@ -20,6 +21,8 @@ class StudyBuddyRoute {
         return _getPageRoute(SignUpScreen());
       case successScreenRoute:
         return _getPageRoute(const SuccessScreen());
+      case bottomNavigationScreenRoute:
+        return _getPageRoute(const CustomBottomNavigation());
     }
     return null;
   }

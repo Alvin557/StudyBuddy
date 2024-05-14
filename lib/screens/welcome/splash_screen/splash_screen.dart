@@ -55,14 +55,14 @@ class _SplashScreenState extends State<SplashScreen> {
                 "Study Buddy",
                 style: TextStyle(
                   fontFamily: "Poppins",
-                  color: StudyBuddy.backgroundColor,
+                  color: const Color(0xffffffff),
                   fontSize: 30.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),
               const Spacer(),
               LoadingAnimationWidget.waveDots(
-                  color: StudyBuddy.backgroundColor, size: 33.sp),
+                  color: const Color(0xffffffff), size: 33.sp),
               SizedBox(height: 68.h)
             ],
           ),
