@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:study_buddy/const/colors.dart';
-import 'package:study_buddy/const/route_const.dart';
+import '../../const/colors.dart';
+import '../../const/route_const.dart';
 
 class StudyPlansScreen extends StatelessWidget {
   StudyPlansScreen({super.key});

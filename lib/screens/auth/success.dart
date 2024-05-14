@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:study_buddy/const/route_const.dart';
+import '../../const/route_const.dart';
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});

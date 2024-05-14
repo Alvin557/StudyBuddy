@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy/screens/study_plans/add_study_plan.dart';
+import 'package:study_buddy/screens/search/search_study_material.dart';
+import '../screens/study_plans/add_study_plan.dart';
 
 import '../const/route_const.dart';
 import '../screens/auth/login.dart';
@@ -26,6 +27,8 @@ class StudyBuddyRoute {
         return _getPageRoute(const CustomBottomNavigation());
       case addStudyPlansRoute:
         return _getPageRoute(const AddStudyPlans());
+      case searchStudyMaterial:
+        return _getPageRoute(const SearchStudyMaterial());
     }
     return null;
   }

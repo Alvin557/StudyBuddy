@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_buddy/const/route_const.dart';
 import '../forum/forum_screen.dart';
 import '../group/group_screen.dart';
 import '../study_plans/study_plans_screen.dart';
@@ -35,16 +36,21 @@ class CustomBottomNavigation extends StatelessWidget {
               children: [
                 CustomNavItem("Home", "assets/images/home.png", 0, provider),
                 CustomNavItem("Forum", "assets/images/forum.png", 1, provider),
-                Container(
-                  height: 52,
-                  width: 52,
-                  decoration: const BoxDecoration(
-                      color: Color(0xffCBF3F0), shape: BoxShape.circle),
-                  child: const Center(
-                      child: Icon(
-                    Icons.search,
-                    color: Color(0xff919191),
-                  )),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, searchStudyMaterial);
+                  },
+                  child: Container(
+                    height: 52,
+                    width: 52,
+                    decoration: const BoxDecoration(
+                        color: Color(0xffCBF3F0), shape: BoxShape.circle),
+                    child: const Center(
+                        child: Icon(
+                      Icons.search,
+                      color: Color(0xff919191),
+                    )),
+                  ),
                 ),
                 CustomNavItem(
                     "Plans", "assets/images/message.png", 2, provider),
