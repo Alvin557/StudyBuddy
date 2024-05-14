@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../const/colors.dart';
 import '../../../const/route_const.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,12 +20,18 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 5), () async {
       SharedPreferences? prefs = await SharedPreferences.getInstance();
 
-      bool firstTimeOrNot = prefs.getBool("first_time") ?? false;
+      bool firstTimeOrNot = prefs.getBool("first_time") ?? true;
+      bool loggedIn = prefs.getBool("loggedIn") ?? false;
       if (!mounted) return;
       Navigator.pushReplacementNamed(
-          context, firstTimeOrNot ? sliderScreenRoute : loginScreenRoute);
+          context,
+          firstTimeOrNot
+              ? sliderScreenRoute
+              : loggedIn
+                  ? bottomNavigationScreenRoute
+                  : loginScreenRoute);
 
-      prefs.setBool("first_time", true);
+      prefs.setBool("first_time", false);
     });
   }
 

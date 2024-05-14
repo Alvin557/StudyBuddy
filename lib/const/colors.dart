@@ -9,4 +9,5 @@ class StudyBuddy {
   static const secondaryColor = Color(0xffFF9F1C);
   static const blueColor = Color(0xff0D5CB0);
   static const greyColor = Color(0xff919191);
+  static const whiteColor = Color(0xffffffff);
 }

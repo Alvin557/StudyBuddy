@@ -27,26 +27,30 @@ class CustomBottomNavigation extends StatelessWidget {
       ),
       bottomNavigationBar: SizedBox(
           height: 80,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomNavItem("Home", "assets/images/home.png", 0, provider),
-              CustomNavItem("Forum", "assets/images/forum.png", 1, provider),
-              Container(
-                height: 52,
-                width: 52,
-                decoration: const BoxDecoration(
-                    color: Color(0xffCBF3F0), shape: BoxShape.circle),
-                child: const Center(
-                    child: Icon(
-                  Icons.search,
-                  color: Color(0xff919191),
-                )),
-              ),
-              CustomNavItem("Plans", "assets/images/message.png", 2, provider),
-              CustomNavItem("Group", "assets/images/user.png", 3, provider),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomNavItem("Home", "assets/images/home.png", 0, provider),
+                CustomNavItem("Forum", "assets/images/forum.png", 1, provider),
+                Container(
+                  height: 52,
+                  width: 52,
+                  decoration: const BoxDecoration(
+                      color: Color(0xffCBF3F0), shape: BoxShape.circle),
+                  child: const Center(
+                      child: Icon(
+                    Icons.search,
+                    color: Color(0xff919191),
+                  )),
+                ),
+                CustomNavItem(
+                    "Plans", "assets/images/message.png", 2, provider),
+                CustomNavItem("Group", "assets/images/user.png", 3, provider),
+              ],
+            ),
           )),
     );
   }

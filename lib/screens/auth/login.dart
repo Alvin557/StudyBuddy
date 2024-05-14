@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../const/route_const.dart';
 import 'bloc/email_textfield_bloc/email_text_field_bloc.dart';
@@ -206,7 +207,7 @@ class LoginScreen extends StatelessWidget {
                             ));
                       },
                       listener: (BuildContext context,
-                          ClickLoginSubmitButtonState state) {
+                          ClickLoginSubmitButtonState state) async {
                         bool first = true;
                         if (first &&
                             state.success! &&
@@ -215,6 +216,9 @@ class LoginScreen extends StatelessWidget {
                           context.read<ClickLoginSubmitButtonBloc>().add(
                               const ClickLoginSubmit(
                                   email: null, password: null));
+                          SharedPreferences? prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setBool("loggedIn", true);
                           Navigator.pushNamed(context, successScreenRoute);
                         }
                       },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:study_buddy/const/colors.dart';
+import 'package:study_buddy/const/route_const.dart';
 
 class StudyPlansScreen extends StatelessWidget {
   StudyPlansScreen({super.key});
@@ -36,6 +37,18 @@ class StudyPlansScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: StudyBuddy.primaryColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+          onPressed: () {
+            Navigator.pushNamed(context, addStudyPlansRoute);
+          },
+          child: const Icon(
+            Icons.add,
+            color: StudyBuddy.whiteColor,
+          ),
+        ),
         appBar: AppBar(
           elevation: 0,
           titleSpacing: 0,

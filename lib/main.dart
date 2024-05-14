@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'config/route.dart';
 import 'const/route_const.dart';
@@ -11,7 +12,7 @@ import 'screens/auth/bloc/password_textfield_bloc/password_field_bloc.dart';
 import 'screens/auth/bloc/submit_button_bloc/bloc/click_submit_button_bloc.dart';
 import 'screens/bottom_navigation/bottom_sheet_provider.dart';
 
-void main() {
+void main() async {
   runApp(MultiBlocProvider(providers: [
     BlocProvider<EmailTextFieldBloc>(create: (context) => EmailTextFieldBloc()),
     BlocProvider<PasswordFieldBloc>(create: (context) => PasswordFieldBloc()),
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
       child: SafeArea(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: bottomNavigationScreenRoute,
+          initialRoute: splashScreenRoute,
           onGenerateRoute: StudyBuddyRoute.generateRoute,
         ),
       ),
