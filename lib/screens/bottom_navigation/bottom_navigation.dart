@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:study_buddy/const/route_const.dart';
+import '../../const/route_const.dart';
 import '../forum/forum_screen.dart';
 import '../group/group_screen.dart';
 import '../study_plans/study_plans_screen.dart';

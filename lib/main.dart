@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import 'config/route.dart';
+import 'screens/quizz/take_quizz.dart';
+import 'screens/study_details/study_detail_screen.dart';
 import 'const/route_const.dart';
+import 'screens/quizz/add_quizz.dart';
+
 import 'screens/auth/bloc/email_textfield_bloc/email_text_field_bloc.dart';
 import 'screens/auth/bloc/password_icon/bloc/password_icon_bloc.dart';
 import 'screens/auth/bloc/password_textfield_bloc/password_field_bloc.dart';
 import 'screens/auth/bloc/submit_button_bloc/bloc/click_submit_button_bloc.dart';
 import 'screens/bottom_navigation/bottom_sheet_provider.dart';
+import 'screens/quizz/quizz_number_provider.dart';
 
 void main() async {
   runApp(MultiBlocProvider(providers: [
     BlocProvider<EmailTextFieldBloc>(create: (context) => EmailTextFieldBloc()),
+    ChangeNotifierProvider<QuizzNUmberProvider>(
+        create: (context) => QuizzNUmberProvider()),
     BlocProvider<PasswordFieldBloc>(create: (context) => PasswordFieldBloc()),
     BlocProvider<PasswordIconBloc>(create: (context) => PasswordIconBloc()),
     ChangeNotifierProvider<BottomsheetProvider>(
@@ -31,7 +37,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const ScreenUtilInit(
+    return ScreenUtilInit(
       child: SafeArea(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

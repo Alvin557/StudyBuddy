@@ -21,7 +21,7 @@ class PasswordTextfield extends StatelessWidget {
   Widget build(context) {
     return TextFormField(
       controller: controller,
-      obscureText: !clickedState!,
+      obscureText: clickedState!,
       decoration: InputDecoration(
         suffixIcon: InkWell(
             onTap: () {
@@ -30,7 +30,7 @@ class PasswordTextfield extends StatelessWidget {
                   .add(getEventForState(state!, clickedState!));
             },
             child: Icon(
-              clickedState! ? Icons.visibility : Icons.visibility_off,
+              !clickedState! ? Icons.visibility : Icons.visibility_off,
               color: const Color(0xff1F1F39),
             )),
         hintText: text,

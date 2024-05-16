@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:study_buddy/const/colors.dart';
+import '../../const/colors.dart';
 
 class AddStudyPlans extends StatefulWidget {
   const AddStudyPlans({super.key});
@@ -12,12 +12,14 @@ class AddStudyPlans extends StatefulWidget {
 class _AddStudyPlansState extends State<AddStudyPlans> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool switchState = false;
-  final items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
+  final List<Map<String, dynamic>> days = [
+    {'name': "S", 'isSelected': false},
+    {'name': "M", 'isSelected': false},
+    {'name': "T", 'isSelected': false},
+    {'name': "W", 'isSelected': false},
+    {'name': "T", 'isSelected': false},
+    {'name': "F", 'isSelected': false},
+    {'name': "S", 'isSelected': false},
   ];
 
   @override
@@ -37,6 +39,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,6 +53,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                         if (value!.isEmpty) {
                           return "Please enter title";
                         }
+                        return null;
                       },
                       decoration: InputDecoration(
                         hintText: "Enter title ",
@@ -93,6 +97,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                           children: [
                             Text(
                               "9:00 am",
+                              style: TextStyle(color: Color(0xff000000)),
                             ),
                             Icon(Icons.arrow_drop_down_outlined)
                           ],
@@ -115,7 +120,10 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                             )),
                         child: const Row(
                           children: [
-                            Text("9:00 am"),
+                            Text(
+                              "9:00 am",
+                              style: TextStyle(color: Color(0xff000000)),
+                            ),
                             Icon(Icons.arrow_drop_down_outlined)
                           ],
                         ))
@@ -145,6 +153,47 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                 ),
                 const SizedBox(
                   height: 14,
+                ),
+                const CustomText(text: "Custom: "),
+                Row(
+                  children: List.generate(
+                      days.length,
+                      (index) => Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, right: 10, bottom: 20),
+                              child: InkWell(
+                                customBorder: const CircleBorder(),
+                                onTap: () {
+                                  setState(() {
+                                    days[index]['isSelected'] =
+                                        !days[index]['isSelected'];
+                                  });
+                                },
+                                child: Container(
+                                  height: 36,
+                                  width: 36,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          width: 1,
+                                          color: StudyBuddy.primaryColor),
+                                      color: days[index]['isSelected']
+                                          ? StudyBuddy.primaryColor
+                                          : StudyBuddy.whiteColor),
+                                  child: Center(
+                                      child: Text(
+                                    days[index]['name'],
+                                    style: TextStyle(
+                                        color: days[index]['isSelected']
+                                            ? StudyBuddy.whiteColor
+                                            : StudyBuddy.primaryColor,
+                                        fontSize: 16),
+                                  )),
+                                ),
+                              ),
+                            ),
+                          )),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +229,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                   ],
                 ),
                 const SizedBox(
-                  height: 14,
+                  height: 20,
                 ),
                 SizedBox(
                   height: 48,

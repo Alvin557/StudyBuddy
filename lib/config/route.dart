@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy/screens/search/search_study_material.dart';
-import '../screens/study_plans/add_study_plan.dart';
+import 'package:study_buddy/screens/flashcard/add_flashcard.dart';
+import 'package:study_buddy/screens/flashcard/flashcards.dart';
+import 'package:study_buddy/screens/quizz/add_quizz.dart';
+import 'package:study_buddy/screens/study_details/study_detail_screen.dart';
 
 import '../const/route_const.dart';
 import '../screens/auth/login.dart';
 import '../screens/auth/signup.dart';
 import '../screens/auth/success.dart';
 import '../screens/bottom_navigation/bottom_navigation.dart';
+import '../screens/quizz/take_quizz.dart';
+import '../screens/search/search_study_material.dart';
 import '../screens/slider/slider_screen.dart';
+import '../screens/study_details/start_learning.dart';
+import '../screens/study_plans/add_study_plan.dart';
+import '../screens/study_plans/study_plans_screen.dart';
 import '../screens/welcome/splash_screen/splash_screen.dart';
 
 class StudyBuddyRoute {
@@ -28,7 +35,21 @@ class StudyBuddyRoute {
       case addStudyPlansRoute:
         return _getPageRoute(const AddStudyPlans());
       case searchStudyMaterial:
-        return _getPageRoute(const SearchStudyMaterial());
+        return _getPageRoute(SearchStudyMaterial());
+      case startLearningRoute:
+        return _getPageRoute(const StartLearning());
+      case addQuizzRoute:
+        return _getPageRoute(const AddQuizz());
+      case flashcardRoute:
+        return _getPageRoute(const Flashcards());
+      case addFlashcardRoute:
+        return _getPageRoute(AddFlashCard());
+      case studyPlansRoute:
+        return _getPageRoute(StudyPlansScreen());
+      case takeQuizzRoute:
+        return _getPageRoute(const TakeQuizz());
+      case studyDetailsRoute:
+        return _getPageRoute(StudyDetailScreen());
     }
     return null;
   }

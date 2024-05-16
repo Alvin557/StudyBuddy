@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:study_buddy/const/route_const.dart';
 
 import '../../const/colors.dart';
 
@@ -10,17 +9,17 @@ class HomeScreen extends StatelessWidget {
   final List<Map<String, String>> quizzData = [
     {
       "heading": "Daily Quizz",
-      "questiopns": "10 Questions",
+      "questions": "10 Questions",
       "category": "2 Categories"
     },
     {
       "heading": "Added Quizz",
-      "questiopns": "12 Questions",
+      "questions": "12 Questions",
       "category": "6 Categories"
     },
     {
       "heading": "Expert Quizz",
-      "questiopns": "20 Questions",
+      "questions": "20 Questions",
       "category": "5 Categories"
     }
   ];
@@ -119,13 +118,18 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Current Study Session"),
-                      Text(
-                        "My sessions",
-                        style: TextStyle(color: Color(0xff2EC4B6)),
+                      const Text("Current Study Session"),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, studyPlansRoute);
+                        },
+                        child: const Text(
+                          "My sessions",
+                          style: TextStyle(color: Color(0xff2EC4B6)),
+                        ),
                       )
                     ],
                   ),
@@ -173,53 +177,62 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                   children: List.generate(quizzData.length, (index) {
                 final data = quizzData[index];
-                return Container(
-                  margin: const EdgeInsets.only(right: 16),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 22, horizontal: 15),
-                  decoration: BoxDecoration(
-                      color: index % 2 != 0
-                          ? const Color(0xffFF9F1C)
-                          : const Color(0xff2EC4B6),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data["heading"]!,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 33,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xffCBF3F0)),
+                return InkWell(
+                  onTap: () => Navigator.pushNamed(context, takeQuizzRoute),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 22, horizontal: 15),
+                    decoration: BoxDecoration(
+                        color: index % 2 != 0
+                            ? const Color(0xffFF9F1C)
+                            : const Color(0xff2EC4B6),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data["heading"]!,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 33,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  color: StudyBuddy.lightPrimary),
                               child: Text(
-                                data["questiopns"]!,
-                                style:
-                                    const TextStyle(color: Color(0xff1E1E1E)),
-                              )),
-                          const SizedBox(
-                            width: 28,
-                          ),
-                          ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xffCBF3F0)),
+                                data["questions"]!,
+                                style: const TextStyle(
+                                    color: StudyBuddy.blackColor),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 28,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  color: StudyBuddy.lightPrimary),
                               child: Text(
                                 data["category"]!,
-                                style:
-                                    const TextStyle(color: Color(0xff1E1E1E)),
-                              ))
-                        ],
-                      )
-                    ],
+                                style: const TextStyle(
+                                    color: StudyBuddy.blackColor),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 );
               })),
@@ -230,9 +243,9 @@ class HomeScreen extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushNamed(context, addQuizzRoute),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: StudyBuddy.primaryColor,
+                      backgroundColor: StudyBuddy.lightPrimary,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                   child: const Text(
@@ -252,44 +265,50 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                   children: List.generate(flashCardDatt.length, (index) {
                 final data = flashCardDatt[index];
-                return Container(
-                  margin: const EdgeInsets.only(right: 16),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 22, horizontal: 15),
-                  decoration: BoxDecoration(
-                      color: index % 2 != 0
-                          ? StudyBuddy.secondaryLightColor
-                          : StudyBuddy.lightPrimary,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data["heading"]!,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 33,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: StudyBuddy.primaryColor),
+                return InkWell(
+                  onTap: () => Navigator.pushNamed(context, flashcardRoute),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 22, horizontal: 15),
+                    decoration: BoxDecoration(
+                        color: index % 2 != 0
+                            ? StudyBuddy.secondaryLightColor
+                            : StudyBuddy.lightPrimary,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data["heading"]!,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 33,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  color: StudyBuddy.primaryColor),
                               child: Text(
                                 data["flashcard"]!,
-                                style:
-                                    const TextStyle(color: Color(0xff1E1E1E)),
-                              )),
-                          const SizedBox(
-                            width: 164,
-                          ),
-                        ],
-                      ),
-                    ],
+                                style: const TextStyle(
+                                    color: StudyBuddy.whiteColor),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 164,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               })),
@@ -306,13 +325,14 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () =>
+                              Navigator.pushNamed(context, addFlashcardRoute),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: StudyBuddy.primaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
                           child: const Text(
-                            "Add quizzes",
+                            "Add Flashcard",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff000000)),
@@ -372,7 +392,9 @@ class HomeScreen extends StatelessWidget {
                                               width: 151,
                                               height: 40,
                                               child: ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () =>
+                                                    Navigator.pushNamed(context,
+                                                        studyDetailsRoute),
                                                 style: ElevatedButton.styleFrom(
                                                     alignment: Alignment
                                                         .centerLeft,

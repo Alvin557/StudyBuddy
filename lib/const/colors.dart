@@ -10,4 +10,5 @@ class StudyBuddy {
   static const blueColor = Color(0xff0D5CB0);
   static const greyColor = Color(0xff919191);
   static const whiteColor = Color(0xffffffff);
+  static const blackColor = Color(0xff000000);
 }

@@ -219,7 +219,10 @@ class LoginScreen extends StatelessWidget {
                           SharedPreferences? prefs =
                               await SharedPreferences.getInstance();
                           prefs.setBool("loggedIn", true);
-                          Navigator.pushNamed(context, successScreenRoute);
+                          Navigator.pushReplacementNamed(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              successScreenRoute);
                         }
                       },
                     ),

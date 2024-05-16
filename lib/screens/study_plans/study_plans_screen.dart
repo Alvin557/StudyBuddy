@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../const/colors.dart';
 import '../../const/route_const.dart';
 
@@ -52,22 +52,19 @@ class StudyPlansScreen extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           titleSpacing: 0,
-          title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Center(
-              child: RichText(
-                  text: const TextSpan(children: [
-                TextSpan(
-                    text: "Study",
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff000000))),
-                TextSpan(
-                    text: "Plans",
-                    style: TextStyle(fontSize: 24, color: Color(0xff000000)))
-              ])),
-            ),
+          title: Center(
+            child: RichText(
+                text: const TextSpan(children: [
+              TextSpan(
+                  text: "Study",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff000000))),
+              TextSpan(
+                  text: "Plans",
+                  style: TextStyle(fontSize: 24, color: Color(0xff000000)))
+            ])),
           ),
           excludeHeaderSemantics: false,
           actions: [
@@ -91,7 +88,7 @@ class StudyPlansScreen extends StatelessWidget {
             children: List.generate(studyPlans.length, (index) {
               final data = studyPlans[index];
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 13.h),
+                margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10),
                 padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 10.h),
                 decoration: BoxDecoration(
                     color: const Color(0xffffffff),
@@ -114,7 +111,7 @@ class StudyPlansScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: Colors.red,
                           image: const DecorationImage(
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               image: AssetImage('assets/images/study.jpg')),
                           borderRadius: BorderRadius.circular(24)),
                     ),
@@ -128,7 +125,14 @@ class StudyPlansScreen extends StatelessWidget {
                         SizedBox(
                           height: 10.h,
                         ),
-                        Text(data['title']),
+                        Text(
+                          data['title'],
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
                         Text(data['time']),
                         RichText(
                             text: TextSpan(children: [
