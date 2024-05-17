@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy/screens/forum/add_forum.dart';
+import 'package:study_buddy/screens/search/study_materials.dart';
 
 import '../const/route_const.dart';
 import '../screens/auth/login.dart';
@@ -8,6 +8,8 @@ import '../screens/auth/success.dart';
 import '../screens/bottom_navigation/bottom_navigation.dart';
 import '../screens/flashcard/add_flashcard.dart';
 import '../screens/flashcard/flashcards.dart';
+import '../screens/forum/add_forum.dart';
+import '../screens/profile/profile.dart';
 import '../screens/quizz/add_quizz.dart';
 import '../screens/quizz/take_quizz.dart';
 import '../screens/search/search_study_material.dart';
@@ -28,7 +30,7 @@ class StudyBuddyRoute {
       case loginScreenRoute:
         return _getPageRoute(LoginScreen());
       case signUpScreenRoute:
-        return _getPageRoute(SignUpScreen());
+        return _getPageRoute(const SignUpScreen());
       case successScreenRoute:
         return _getPageRoute(const SuccessScreen());
       case bottomNavigationScreenRoute:
@@ -52,7 +54,11 @@ class StudyBuddyRoute {
       case studyDetailsRoute:
         return _getPageRoute(StudyDetailScreen());
       case addForumRoute:
-        return _getPageRoute(AddForum());
+        return _getPageRoute(const AddForum());
+      case profileScreenRoute:
+        return _getPageRoute(const ProfileScreen());
+      case studyMaterialRoute:
+        return _getPageRoute(const StudyMaterial());
     }
     return null;
   }

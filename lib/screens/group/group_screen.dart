@@ -13,7 +13,7 @@ class GroupScreen extends StatelessWidget {
           title: RichText(
               text: const TextSpan(children: [
             TextSpan(
-                text: "Study",
+                text: "Group",
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -133,12 +133,12 @@ class CustomContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 141,
-            height: 67,
+            width: 147,
+            height: 71,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 image: const DecorationImage(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     image: AssetImage("assets/images/study.jpg"))),
           ),
           const SizedBox(
@@ -147,7 +147,7 @@ class CustomContainer extends StatelessWidget {
           const Text(
             "Union of developers",
             style: TextStyle(
-                fontSize: 12,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: StudyBuddy.blackColor),
           ),
@@ -155,17 +155,17 @@ class CustomContainer extends StatelessWidget {
             height: 4,
           ),
           const Text("Computer Science",
-              style: TextStyle(fontSize: 10, color: Color(0xff000000))),
+              style: TextStyle(fontSize: 14, color: Color(0xff000000))),
           const Text("100 members ",
               style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: StudyBuddy.greyColor)),
           const SizedBox(
             height: 10,
           ),
           SizedBox(
-            width: 141,
+            width: 147,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: StudyBuddy.secondaryColor),
@@ -200,8 +200,8 @@ class CustomGroupCard extends StatelessWidget {
     return Row(
       children: [
         Container(
-          height: 27,
-          width: 27,
+          height: 37,
+          width: 37,
           decoration: BoxDecoration(
               image: const DecorationImage(
                   fit: BoxFit.fill,
@@ -216,11 +216,11 @@ class CustomGroupCard extends StatelessWidget {
           children: [
             Text(
               headingTitle,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             Text(subHeadingTitle,
                 style:
-                    const TextStyle(fontSize: 8, color: StudyBuddy.greyColor))
+                    const TextStyle(fontSize: 12, color: StudyBuddy.greyColor))
           ],
         )
       ],
@@ -245,11 +245,11 @@ class HeadingGroup extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Text(
           actionTitle,
-          style: const TextStyle(color: StudyBuddy.primaryColor, fontSize: 10),
+          style: const TextStyle(color: StudyBuddy.primaryColor, fontSize: 14),
         )
       ],
     );

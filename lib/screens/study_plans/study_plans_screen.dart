@@ -72,18 +72,24 @@ class StudyPlansScreen extends StatelessWidget {
           ),
           excludeHeaderSemantics: false,
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 30.0),
-              child: Container(
-                  height: 36,
-                  width: 36,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Color(0xffFFA40B)),
-                  child: const Icon(
-                    Icons.search,
-                    size: 20,
-                    color: Color(0xffffffff),
-                  )),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, searchStudyMaterial);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 30.0),
+                child: Container(
+                    height: 36,
+                    width: 36,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: StudyBuddy.secondaryLightColor),
+                    child: const Icon(
+                      Icons.search,
+                      size: 20,
+                      color: Color(0xffffffff),
+                    )),
+              ),
             )
           ],
         ),

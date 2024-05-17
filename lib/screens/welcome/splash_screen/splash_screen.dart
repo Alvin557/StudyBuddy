@@ -56,15 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               const Spacer(),
               SizedBox(height: 10.h),
-              Text(
-                "Study Buddy",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  color: const Color(0xffffffff),
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              Center(child: Image.asset(height: 200, "assets/images/logo.png")),
               const Spacer(),
               LoadingAnimationWidget.waveDots(
                   color: const Color(0xffffffff), size: 33.sp),

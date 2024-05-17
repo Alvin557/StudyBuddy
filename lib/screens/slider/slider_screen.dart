@@ -137,7 +137,10 @@ class _SliderScreenState extends State<SliderScreen> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10))),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, signUpScreenRoute);
+                                  },
                                   child: const Text(
                                     "Sign up",
                                     style: TextStyle(color: Color(0xffffffff)),

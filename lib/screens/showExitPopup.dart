@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void showExitPopup(context) {
+void showExitPopup(context, {message = "Do you want to exit an app"}) {
   showDialog<void>(
     //show confirm dialogue
     //the return value will be from "Yes" or "No" options
@@ -10,7 +10,7 @@ void showExitPopup(context) {
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       title: const Text('Exit App'),
-      content: const Text('Do you want to exit an App?'),
+      content: Text(message),
       actions: [
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(false),

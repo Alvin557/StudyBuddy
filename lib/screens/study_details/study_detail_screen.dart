@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../const/route_const.dart';
 
 import '../../const/colors.dart';
+import '../../const/route_const.dart';
 
 class StudyDetailScreen extends StatelessWidget {
   StudyDetailScreen({super.key});

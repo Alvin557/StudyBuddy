@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:study_buddy/const/route_const.dart';
+
 import '../../const/colors.dart';
 
 class SearchStudyMaterial extends StatelessWidget {
@@ -133,26 +135,31 @@ class CustomGridView extends StatelessWidget {
           mainAxisSpacing: 10,
           crossAxisSpacing: 10),
       itemBuilder: (BuildContext context, int index) {
-        return Container(
-          decoration: BoxDecoration(
-              color: boolPrimaryColor
-                  ? StudyBuddy.primaryColor
-                  : StudyBuddy.whiteColor,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                  width: boolPrimaryColor ? 0 : 1,
-                  color: StudyBuddy.greyColor)),
-          child: Center(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
-            child: Text(
-              currentSessionData[index],
-              style: TextStyle(
-                  color: boolPrimaryColor
-                      ? StudyBuddy.whiteColor
-                      : StudyBuddy.blackColor),
-            ),
-          )),
+        return InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, studyMaterialRoute);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                color: boolPrimaryColor
+                    ? StudyBuddy.primaryColor
+                    : StudyBuddy.whiteColor,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                    width: boolPrimaryColor ? 0 : 1,
+                    color: StudyBuddy.greyColor)),
+            child: Center(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
+              child: Text(
+                currentSessionData[index],
+                style: TextStyle(
+                    color: boolPrimaryColor
+                        ? StudyBuddy.whiteColor
+                        : StudyBuddy.blackColor),
+              ),
+            )),
+          ),
         );
       },
     );

@@ -15,3 +15,5 @@ const String studyPlansRoute = "studyPlans";
 const String takeQuizzRoute = "takeQuizz";
 const String studyDetailsRoute = "studyDetail";
 const String addForumRoute = "addForum";
+const String profileScreenRoute = "profileScreen";
+const String studyMaterialRoute = "studyMaterial";

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:study_buddy/screens/showExitPopup.dart';
+
 import '../../const/route_const.dart';
 import '../forum/forum_screen.dart';
 import '../group/group_screen.dart';
-import '../study_plans/study_plans_screen.dart';
-
 import '../home/home_screen.dart';
+import '../showExitPopup.dart';
+import '../study_plans/study_plans_screen.dart';
 import 'bottom_sheet_nav_item.dart';
 import 'bottom_sheet_provider.dart';
 

@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../const/route_const.dart';
+import 'package:sidebarx/sidebarx.dart';
 
 import '../../const/colors.dart';
-import '../auth/bloc/submit_button_bloc/bloc/click_submit_button_bloc.dart';
+import '../../const/route_const.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -65,6 +62,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SidebarX(
+        controller: SidebarXController(selectedIndex: 0, extended: true),
+      ),
       appBar: AppBar(
         elevation: 0,
         titleSpacing: 0,
@@ -79,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Color(0xff000000))),
             TextSpan(
-                text: "Study",
+                text: "Buddy",
                 style: TextStyle(fontSize: 24, color: Color(0xff000000)))
           ])),
         ),
@@ -87,12 +87,8 @@ class HomeScreen extends StatelessWidget {
         actions: [
           InkWell(
             onTap: () async {
-              FirebaseAuth.instance.signOut();
-              SharedPreferences? prefs = await SharedPreferences.getInstance();
-              prefs.setBool("loggedIn", false);
-
               if (context.mounted) {
-                Navigator.pushReplacementNamed(context, loginScreenRoute);
+                Navigator.pushNamed(context, profileScreenRoute);
               }
             },
             child: Padding(
@@ -101,7 +97,8 @@ class HomeScreen extends StatelessWidget {
                   height: 36,
                   width: 36,
                   decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Color(0xffFFA40B)),
+                      shape: BoxShape.circle,
+                      color: StudyBuddy.secondaryLightColor),
                   child: const Icon(
                     Icons.person,
                     size: 20,
@@ -394,7 +391,7 @@ class HomeScreen extends StatelessWidget {
                                               height: 112,
                                               decoration: BoxDecoration(
                                                   image: const DecorationImage(
-                                                      fit: BoxFit.fitWidth,
+                                                      fit: BoxFit.cover,
                                                       image: AssetImage(
                                                           'assets/images/study.jpg')),
                                                   borderRadius:
