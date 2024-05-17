@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_buddy/const/route_const.dart';
-import 'package:study_buddy/screens/forum/forum_screen.dart';
+import 'forum_screen.dart';
 
 import '../../const/colors.dart';
 import '../study_plans/add_study_plan.dart';
