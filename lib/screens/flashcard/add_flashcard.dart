@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../const/colors.dart';
@@ -8,6 +9,11 @@ class AddFlashCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference flashCard =
+        FirebaseFirestore.instance.collection("flashcard");
+    final titleTextController = TextEditingController();
+    final descriptionTextController = TextEditingController();
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -34,9 +40,12 @@ class AddFlashCard extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
+                  controller: titleTextController,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please enter title";
+                    } else if (value.length > 20) {
+                      return "Title should be 20 character less.";
                     }
                     return null;
                   },
@@ -62,6 +71,7 @@ class AddFlashCard extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
+                  controller: descriptionTextController,
                   maxLines: 4,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -96,9 +106,13 @@ class AddFlashCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        flashCard.add({
+                          "title": titleTextController.text,
+                          "description": descriptionTextController.text,
+                          "favorite": false
+                        });
                         Navigator.pop(context);
                       }
-                      ;
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(

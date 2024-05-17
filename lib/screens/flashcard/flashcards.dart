@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../const/colors.dart';
 
 class Flashcards extends StatefulWidget {
@@ -29,98 +32,122 @@ class _FlashcardsState extends State<Flashcards> {
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference reference =
+        FirebaseFirestore.instance.collection('flashcard');
     return Scaffold(
       appBar: AppBar(
         title: const Text("Flashcards"),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 25,
-            ),
-            Center(
-                child: Text(
-              "${currentIndex + 1} of ${flashCard.length}",
-              style: const TextStyle(fontSize: 16),
-            )),
-            const SizedBox(
-              height: 14,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [
-                      StudyBuddy.lightPrimary,
-                      StudyBuddy.secondaryLightColor,
-                    ],
-                  )),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: FutureBuilder<QuerySnapshot>(
+            future: reference.get(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Align(
+                    alignment: Alignment.center,
+                    child: LoadingAnimationWidget.waveDots(
+                        color: StudyBuddy.primaryColor, size: 33.sp),
+                  );
+                case ConnectionState.done:
+                  final data = snapshot.data!.docs;
+                  return Column(
                     children: [
-                      CustomIcon(
-                        left: 14,
-                        isFavorite: flashCard[currentIndex]['favorite'],
+                      const SizedBox(
+                        height: 25,
                       ),
-                      const CustomIcon(
-                        right: 14,
+                      Center(
+                          child: Text(
+                        "${currentIndex + 1} of ${data.length}",
+                        style: const TextStyle(fontSize: 16),
+                      )),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
+                            gradient: const LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                StudyBuddy.lightPrimary,
+                                StudyBuddy.secondaryLightColor,
+                              ],
+                            )),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomIcon(
+                                  left: 14,
+                                  isFavorite: data[currentIndex]['favorite'],
+                                ),
+                                const CustomIcon(
+                                  right: 14,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 60,
+                            ),
+                            Text(
+                              data[currentIndex]['title'],
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 32, fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 29.0, vertical: 30),
+                              child: Text(
+                                data[currentIndex]['description'],
+                                style: const TextStyle(
+                                    fontSize: 20, color: StudyBuddy.blackColor),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 210.0.h,
+                                  right: 14.w,
+                                  left: 14.w,
+                                  bottom: 20.h),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: StudyBuddy.primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      currentIndex = currentIndex + 1;
+                                    });
+                                  },
+                                  //return true when click on "Yes"
+                                  child: const Text(
+                                    'Next',
+                                    style:
+                                        TextStyle(color: StudyBuddy.whiteColor),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: 60,
-                  ),
-                  Text(
-                    flashCard[currentIndex]['title'],
-                    style: const TextStyle(
-                        fontSize: 32, fontWeight: FontWeight.bold),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 29.0, vertical: 30),
-                    child: Text(
-                      flashCard[currentIndex]['description'],
-                      style: const TextStyle(
-                          fontSize: 20, color: StudyBuddy.blackColor),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 210.0, right: 14, left: 14, bottom: 20),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: StudyBuddy.primaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            currentIndex = currentIndex + 1;
-                          });
-                        },
-                        //return true when click on "Yes"
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(color: StudyBuddy.whiteColor),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+                  );
+                default:
+              }
+              return const SizedBox();
+            }),
       ),
     );
   }

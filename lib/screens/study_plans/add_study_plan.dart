@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../const/colors.dart';
+import 'package:date_format/date_format.dart';
 
 class AddStudyPlans extends StatefulWidget {
   const AddStudyPlans({super.key});
@@ -12,6 +13,10 @@ class AddStudyPlans extends StatefulWidget {
 class _AddStudyPlansState extends State<AddStudyPlans> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool switchState = false;
+  String? timeStartController = "";
+  String? timeEndController = "";
+
+  String? hour, minute, time;
   final List<Map<String, dynamic>> days = [
     {'name': "S", 'isSelected': false},
     {'name': "M", 'isSelected': false},
@@ -24,6 +29,30 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
 
   @override
   Widget build(BuildContext context) {
+    Future<Null> selectTime(BuildContext context, bool start) async {
+      TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
+      final TimeOfDay? picked = await showTimePicker(
+        context: context,
+        initialTime: selectedTime,
+      );
+      if (picked != null) {
+        setState(() {
+          selectedTime = picked;
+          hour = selectedTime.hour.toString();
+          minute = selectedTime.minute.toString();
+          time = '$hour : $minute';
+          start ? timeStartController = time : timeEndController = time;
+          start
+              ? timeStartController = formatDate(
+                  DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+                  [hh, ':', nn, " ", am]).toString()
+              : timeEndController = formatDate(
+                  DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+                  [hh, ':', nn, " ", am]).toString();
+        });
+      }
+    }
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -87,19 +116,23 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                   children: [
                     const CustomText(text: "Start Time: "),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          selectTime(context, true);
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: StudyBuddy.lightPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             )),
-                        child: const Row(
+                        child: Row(
                           children: [
                             Text(
-                              "9:00 am",
-                              style: TextStyle(color: Color(0xff000000)),
+                              timeStartController!.isEmpty
+                                  ? "9:00 am"
+                                  : timeStartController!,
+                              style: const TextStyle(color: Color(0xff000000)),
                             ),
-                            Icon(Icons.arrow_drop_down_outlined)
+                            const Icon(Icons.arrow_drop_down_outlined)
                           ],
                         ))
                   ],
@@ -112,19 +145,23 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                   children: [
                     const CustomText(text: "End Time: "),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          selectTime(context, false);
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: StudyBuddy.lightPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             )),
-                        child: const Row(
+                        child: Row(
                           children: [
                             Text(
-                              "9:00 am",
-                              style: TextStyle(color: Color(0xff000000)),
+                              timeEndController!.isEmpty
+                                  ? "9:00 am"
+                                  : timeEndController!,
+                              style: const TextStyle(color: Color(0xff000000)),
                             ),
-                            Icon(Icons.arrow_drop_down_outlined)
+                            const Icon(Icons.arrow_drop_down_outlined)
                           ],
                         ))
                   ],

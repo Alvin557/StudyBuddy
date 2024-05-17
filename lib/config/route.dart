@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy/screens/flashcard/add_flashcard.dart';
-import 'package:study_buddy/screens/flashcard/flashcards.dart';
-import 'package:study_buddy/screens/quizz/add_quizz.dart';
-import 'package:study_buddy/screens/study_details/study_detail_screen.dart';
+import 'package:study_buddy/screens/forum/add_forum.dart';
 
 import '../const/route_const.dart';
 import '../screens/auth/login.dart';
 import '../screens/auth/signup.dart';
 import '../screens/auth/success.dart';
 import '../screens/bottom_navigation/bottom_navigation.dart';
+import '../screens/flashcard/add_flashcard.dart';
+import '../screens/flashcard/flashcards.dart';
+import '../screens/quizz/add_quizz.dart';
 import '../screens/quizz/take_quizz.dart';
 import '../screens/search/search_study_material.dart';
 import '../screens/slider/slider_screen.dart';
 import '../screens/study_details/start_learning.dart';
+import '../screens/study_details/study_detail_screen.dart';
 import '../screens/study_plans/add_study_plan.dart';
 import '../screens/study_plans/study_plans_screen.dart';
 import '../screens/welcome/splash_screen/splash_screen.dart';
@@ -50,6 +51,8 @@ class StudyBuddyRoute {
         return _getPageRoute(const TakeQuizz());
       case studyDetailsRoute:
         return _getPageRoute(StudyDetailScreen());
+      case addForumRoute:
+        return _getPageRoute(AddForum());
     }
     return null;
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy/const/route_const.dart';
+import '../../const/route_const.dart';
 
 import '../../const/colors.dart';
 
