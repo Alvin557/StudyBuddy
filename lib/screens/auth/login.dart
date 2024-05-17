@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../const/route_const.dart';
+import '../showExitPopup.dart';
 import 'bloc/email_textfield_bloc/email_text_field_bloc.dart';
 import 'bloc/password_icon/bloc/password_icon_bloc.dart';
 import 'bloc/password_textfield_bloc/password_field_bloc.dart';
@@ -23,50 +23,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void showExitPopup() {
-      showDialog<void>(
-        //show confirm dialogue
-        //the return value will be from "Yes" or "No" options
-        context: context,
-        builder: (context) => AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          title: const Text('Exit App'),
-          content: const Text('Do you want to exit an App?'),
-          actions: [
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: const Color(0xff2EC4B6)),
-              //return false when click on "NO"
-
-              child: const Text(
-                'No',
-                style: TextStyle(color: Color(0xffffffff)),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: const BorderSide(color: Color(0xff2EC4B6))),
-              ),
-              onPressed: () {
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-              },
-              //return true when click on "Yes"
-              child: const Text(
-                'Yes',
-                style: TextStyle(color: Color(0xff2EC4B6)),
-              ),
-            ),
-          ],
-        ),
-      ); //if showDialouge had returned null, then return false
-    }
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -76,7 +32,7 @@ class LoginScreen extends StatelessWidget {
           ),
           IconButton(
               onPressed: () {
-                showExitPopup();
+                showExitPopup(context);
               },
               icon: const Icon(
                 Icons.arrow_back,
@@ -90,7 +46,7 @@ class LoginScreen extends StatelessWidget {
         canPop: false,
         onPopInvoked: (didpop) {
           if (didpop) return;
-          showExitPopup();
+          showExitPopup(context);
         },
         child: SingleChildScrollView(
           child: Padding(
@@ -154,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   BlocBuilder<ClickLoginSubmitButtonBloc,
                       ClickLoginSubmitButtonState>(builder: (context, state) {
-                    return state.success! && state is CLickLoginSubmitButton
+                    return state is ClickLoginFailure
                         ? const Text(
                             "Incorrect credentials, please enter valid username and password",
                             style: TextStyle(color: Colors.red),

@@ -31,3 +31,7 @@ final class CLickLoginSubmitButton extends ClickLoginSubmitButtonState {
 final class ClickLoginSubmitSuccess extends ClickLoginSubmitButtonState {
   const ClickLoginSubmitSuccess({required super.success});
 }
+
+final class ClickLoginFailure extends ClickLoginSubmitButtonState {
+  const ClickLoginFailure({required super.success});
+}

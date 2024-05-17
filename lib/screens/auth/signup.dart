@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,16 +14,25 @@ import 'login.dart';
 import 'widgets/email_textfield.dart';
 import 'widgets/password_textfield.dart';
 
-class SignUpScreen extends StatelessWidget {
-  SignUpScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  var emailExist = false;
+  var serverError = false;
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +92,8 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 BlocBuilder<PasswordFieldBloc, PasswordFieldBlocState>(
                   builder: (context, fieldState) {
-                    bool previousPasswordVal = false;
-                    bool previousSignUpVal = false;
+                    bool previousPasswordVal = true;
+                    bool previousSignUpVal = true;
                     return BlocBuilder<PasswordIconBloc, PasswordIconBlocState>(
                       builder: (context, iconState) {
                         if (iconState is SignUpPasswordIconClickedState) {
@@ -113,7 +125,6 @@ class SignUpScreen extends StatelessWidget {
                               height: 5.81,
                             ),
                             PasswordTextfield(
-                              key: key,
                               text: "Confirm your password",
                               controller: _confirmPasswordController,
                               value: fieldState is PasswordFaildMatch
@@ -124,7 +135,15 @@ class SignUpScreen extends StatelessWidget {
                                   ? iconState.confirmPasswordState
                                   : previousSignUpVal,
                               state: PasswordFieldState.signUpConfirm,
-                            )
+                            ),
+                            const SizedBox(
+                              height: 15.81,
+                            ),
+                            emailExist
+                                ? const Text(
+                                    "Email already exist! Try with new email or log in.",
+                                    style: TextStyle(color: Colors.red))
+                                : const SizedBox(),
                           ],
                         );
                       },
@@ -146,10 +165,10 @@ class SignUpScreen extends StatelessWidget {
                         context.read<PasswordFieldBloc>().state
                             is! PasswordFieldError &&
                         firstTime &&
+                        !emailExist &&
+                        !serverError &&
                         _formKey.currentState!.validate()) {
                       firstTime = false;
-                      Navigator.pushReplacementNamed(
-                          context, successScreenRoute);
                     }
                   },
                   child: SizedBox(
@@ -160,7 +179,7 @@ class SignUpScreen extends StatelessWidget {
                             backgroundColor: const Color(0xff2EC4B6),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
-                        onPressed: () {
+                        onPressed: () async {
                           context.read<ClickSubmitButtonBloc>().add(ClickSubmit(
                               confirmPassword: _confirmPasswordController.text,
                               password: _passwordController.text,
@@ -172,6 +191,28 @@ class SignUpScreen extends StatelessWidget {
                                   password: _passwordController.text,
                                   confirmPassword:
                                       _confirmPasswordController.text));
+                          if (_formKey.currentState!.validate() &&
+                              context.read<ClickSubmitButtonBloc>().state
+                                  is ClickSubmitSuccess) {
+                            setState(() {
+                              emailExist = false;
+                            });
+                            try {
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text);
+                              Navigator.pushReplacementNamed(
+                                  context, successScreenRoute);
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == "email-already-in-use") {
+                                setState(() {
+                                  emailExist = true;
+                                  _confirmPasswordController.clear();
+                                  _passwordController.clear();
+                                });
+                              }
+                            }
+                          }
                         },
                         child: const Text(
                           "Create account",

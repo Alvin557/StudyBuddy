@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_buddy/screens/showExitPopup.dart';
 import '../../const/route_const.dart';
 import '../forum/forum_screen.dart';
 import '../group/group_screen.dart';
@@ -24,7 +25,13 @@ class CustomBottomNavigation extends StatelessWidget {
     var provider = Provider.of<BottomsheetProvider>(context);
     return Scaffold(
       body: SafeArea(
-        child: _widgetOptions.elementAt(provider.selectedIndex),
+        child: PopScope(
+            canPop: false,
+            onPopInvoked: (didpop) {
+              if (didpop) return;
+              showExitPopup(context);
+            },
+            child: _widgetOptions.elementAt(provider.selectedIndex)),
       ),
       bottomNavigationBar: SizedBox(
           height: 80,

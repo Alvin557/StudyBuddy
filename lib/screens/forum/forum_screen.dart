@@ -42,8 +42,6 @@ class ForumScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
           stream: reference.snapshots(),
           builder: (context, snapshot) {
-            print(snapshot);
-
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return Align(

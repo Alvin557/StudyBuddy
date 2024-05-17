@@ -6,7 +6,7 @@ import '../../const/colors.dart';
 import '../study_plans/add_study_plan.dart';
 
 class AddForum extends StatefulWidget {
-  AddForum({super.key});
+  const AddForum({super.key});
 
   @override
   State<AddForum> createState() => _AddForumState();

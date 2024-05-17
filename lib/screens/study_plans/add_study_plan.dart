@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../const/colors.dart';
@@ -13,9 +14,11 @@ class AddStudyPlans extends StatefulWidget {
 class _AddStudyPlansState extends State<AddStudyPlans> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool switchState = false;
+  bool bottomClicked = false;
   String? timeStartController = "";
   String? timeEndController = "";
-
+  TextEditingController titleTextController = TextEditingController();
+  TextEditingController descriptionTextController = TextEditingController();
   String? hour, minute, time;
   final List<Map<String, dynamic>> days = [
     {'name': "S", 'isSelected': false},
@@ -29,6 +32,9 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference studyPlans =
+        FirebaseFirestore.instance.collection("study_plans");
+
     Future<Null> selectTime(BuildContext context, bool start) async {
       TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
       final TimeOfDay? picked = await showTimePicker(
@@ -84,6 +90,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                         }
                         return null;
                       },
+                      controller: titleTextController,
                       decoration: InputDecoration(
                         hintText: "Enter title ",
                         contentPadding: const EdgeInsets.symmetric(
@@ -128,7 +135,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                           children: [
                             Text(
                               timeStartController!.isEmpty
-                                  ? "9:00 am"
+                                  ? "__:__ AM"
                                   : timeStartController!,
                               style: const TextStyle(color: Color(0xff000000)),
                             ),
@@ -157,7 +164,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                           children: [
                             Text(
                               timeEndController!.isEmpty
-                                  ? "9:00 am"
+                                  ? "__:__ AM"
                                   : timeEndController!,
                               style: const TextStyle(color: Color(0xff000000)),
                             ),
@@ -166,6 +173,20 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                         ))
                   ],
                 ),
+                const SizedBox(
+                  height: 14,
+                ),
+                timeEndController!.isEmpty &&
+                        timeStartController!.isEmpty &&
+                        bottomClicked
+                    ? const Padding(
+                        padding: EdgeInsets.only(left: 24.0),
+                        child: Text(
+                          "Please enter start time and end time",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      )
+                    : const SizedBox(),
                 const SizedBox(
                   height: 14,
                 ),
@@ -241,6 +262,7 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                     ),
                     TextFormField(
                       maxLines: 5,
+                      controller: descriptionTextController,
                       decoration: InputDecoration(
                         hintText: "Enter description ",
                         contentPadding: const EdgeInsets.symmetric(
@@ -277,7 +299,20 @@ class _AddStudyPlansState extends State<AddStudyPlans> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () {
+                        setState(() {
+                          bottomClicked = true;
+                        });
                         if (_formKey.currentState!.validate()) {
+                          studyPlans.add({
+                            "title": titleTextController.text,
+                            "description": descriptionTextController.text,
+                            "startTime": timeStartController,
+                            "endTime": timeEndController,
+                            "repeat": switchState,
+                            "custom": days,
+                            "progress": 0,
+                            "isFavorite": false
+                          });
                           Navigator.pop(context);
                         }
                       },

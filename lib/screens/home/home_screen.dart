@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../const/route_const.dart';
 
 import '../../const/colors.dart';
+import '../auth/bloc/submit_button_bloc/bloc/click_submit_button_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -81,18 +85,29 @@ class HomeScreen extends StatelessWidget {
         ),
         excludeHeaderSemantics: false,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 30.0),
-            child: Container(
-                height: 36,
-                width: 36,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xffFFA40B)),
-                child: const Icon(
-                  Icons.person,
-                  size: 20,
-                  color: Color(0xffffffff),
-                )),
+          InkWell(
+            onTap: () async {
+              FirebaseAuth.instance.signOut();
+              SharedPreferences? prefs = await SharedPreferences.getInstance();
+              prefs.setBool("loggedIn", false);
+
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, loginScreenRoute);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 30.0),
+              child: Container(
+                  height: 36,
+                  width: 36,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Color(0xffFFA40B)),
+                  child: const Icon(
+                    Icons.person,
+                    size: 20,
+                    color: Color(0xffffffff),
+                  )),
+            ),
           )
         ],
       ),

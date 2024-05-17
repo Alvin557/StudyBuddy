@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../const/colors.dart';
 import '../../const/route_const.dart';
@@ -36,6 +38,8 @@ class StudyPlansScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference studyPlans =
+        FirebaseFirestore.instance.collection("study_plans");
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: StudyBuddy.primaryColor,
@@ -84,114 +88,150 @@ class StudyPlansScreen extends StatelessWidget {
           ],
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: List.generate(studyPlans.length, (index) {
-              final data = studyPlans[index];
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10),
-                padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                    color: const Color(0xffffffff),
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xff919191),
-                        blurRadius: 10,
-                        spreadRadius: -6,
-                        offset: Offset(3, 4),
-                      ),
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 108.h,
-                      width: 108.w,
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/images/study.jpg')),
-                          borderRadius: BorderRadius.circular(24)),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          data['title'],
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        Text(data['time']),
-                        RichText(
-                            text: TextSpan(children: [
-                          TextSpan(
-                              text: "${data['progress']}%",
-                              style: const TextStyle(
-                                  color: Color(0xff000000),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold)),
-                          const TextSpan(
-                              text: " complete",
-                              style: TextStyle(
-                                color: Color(0xff919191),
-                              )),
-                        ])),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        SizedBox(
-                          height: 6,
-                          width: 120.w,
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            child: LinearProgressIndicator(
-                              value: data['progress'] / 100,
-                              valueColor: const AlwaysStoppedAnimation<Color>(
-                                  Color(0xffFFBF69)),
-                              backgroundColor: const Color(0xffCBF3F0),
-                            ),
+          child: StreamBuilder<QuerySnapshot>(
+              stream: studyPlans.snapshots(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Align(
+                      alignment: Alignment.center,
+                      child: LoadingAnimationWidget.waveDots(
+                          color: StudyBuddy.primaryColor, size: 33.sp),
+                    );
+                  case ConnectionState.active:
+                    final listOfData = snapshot.data!.docs;
+
+                    return Column(
+                      children: List.generate(listOfData.length, (index) {
+                        final data = listOfData[index];
+                        return Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 24.w, vertical: 10),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 13.w, vertical: 10.h),
+                          decoration: BoxDecoration(
+                              color: const Color(0xffffffff),
+                              borderRadius: BorderRadius.circular(24),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0xff919191),
+                                  blurRadius: 10,
+                                  spreadRadius: -6,
+                                  offset: Offset(3, 4),
+                                ),
+                              ]),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 108.h,
+                                width: 108.w,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    image: const DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                            'assets/images/study.jpg')),
+                                    borderRadius: BorderRadius.circular(24)),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    data['title'][0].toUpperCase() +
+                                        data['title'].substring(1),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(
+                                    '${data['startTime']} to ${data['endTime']} ',
+                                    style: const TextStyle(
+                                        color: StudyBuddy.greyColor),
+                                  ),
+                                  RichText(
+                                      text: TextSpan(children: [
+                                    TextSpan(
+                                        text: "${data['progress']}%",
+                                        style: const TextStyle(
+                                            color: Color(0xff000000),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    const TextSpan(
+                                        text: " complete",
+                                        style: TextStyle(
+                                          color: Color(0xff919191),
+                                        )),
+                                  ])),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                    width: 120.w,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(8)),
+                                      child: LinearProgressIndicator(
+                                        value: data['progress'] / 100,
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                                Color(0xffFFBF69)),
+                                        backgroundColor:
+                                            const Color(0xffCBF3F0),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  studyPlans
+                                      .doc(snapshot.data!.docs[index].id)
+                                      .update(
+                                          {"isFavorite": !data["isFavorite"]});
+                                },
+                                child: Container(
+                                  height: 32,
+                                  width: 32,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: data["isFavorite"]
+                                          ? StudyBuddy.lightPrimary
+                                          : const Color(0xffffffff),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Color(0xff919191),
+                                          blurRadius: 10,
+                                          spreadRadius: -6,
+                                          offset: Offset(3, 4),
+                                        ),
+                                      ]),
+                                  child: const Icon(
+                                    Icons.favorite_border,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: data["isFavorite"]
-                              ? StudyBuddy.lightPrimary
-                              : const Color(0xffffffff),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff919191),
-                              blurRadius: 10,
-                              spreadRadius: -6,
-                              offset: Offset(3, 4),
-                            ),
-                          ]),
-                      child: const Icon(
-                        Icons.favorite_border,
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }),
-          ),
+                        );
+                      }),
+                    );
+                  default:
+                }
+                return const SizedBox();
+              }),
         ));
   }
 }
