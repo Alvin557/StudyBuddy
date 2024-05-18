@@ -10,6 +10,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -56,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(
               height: 14,
             ),
-            const Text("email@gmail.com"),
+            Text(auth.currentUser!.email!),
             const SizedBox(
               height: 30,
             ),

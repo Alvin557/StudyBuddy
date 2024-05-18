@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:study_buddy/screens/showExitPopup.dart';
+import 'package:study_buddy/screens/show_exit_popup.dart';
 
 import '../../const/route_const.dart';
 import 'bloc/email_textfield_bloc/email_text_field_bloc.dart';
@@ -59,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onPopInvoked: (didpop) {
             if (didpop) return;
             showExitPopup(context,
-                message: "Do you want to exit without signing in?");
+                message: "Do you want to exit without signing up?");
           },
           child: SingleChildScrollView(
             child: Padding(

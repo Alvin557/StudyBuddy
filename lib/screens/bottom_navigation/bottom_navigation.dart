@@ -5,7 +5,7 @@ import '../../const/route_const.dart';
 import '../forum/forum_screen.dart';
 import '../group/group_screen.dart';
 import '../home/home_screen.dart';
-import '../showExitPopup.dart';
+import '../show_exit_popup.dart';
 import '../study_plans/study_plans_screen.dart';
 import 'bottom_sheet_nav_item.dart';
 import 'bottom_sheet_provider.dart';

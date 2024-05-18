@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -32,8 +33,12 @@ class _FlashcardsState extends State<Flashcards> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference reference =
-        FirebaseFirestore.instance.collection('flashcard');
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    DocumentReference<Map<String, dynamic>> reference = FirebaseFirestore
+        .instance
+        .collection('flashcard')
+        .doc(auth.currentUser!.uid);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Flashcards"),
@@ -41,7 +46,7 @@ class _FlashcardsState extends State<Flashcards> {
       ),
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot>(
-            future: reference.get(),
+            future: reference.collection("individualFlashCard").get(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -127,7 +132,8 @@ class _FlashcardsState extends State<Flashcards> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      currentIndex = currentIndex + 1;
+                                      currentIndex =
+                                          (currentIndex + 1) % data.length;
                                     });
                                   },
                                   //return true when click on "Yes"

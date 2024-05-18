@@ -39,11 +39,25 @@ class StudyDetailScreen extends StatelessWidget {
         children: [
           Container(
             height: 251,
+            padding: const EdgeInsets.all(18),
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: AssetImage("assets/images/study.jpg"))),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,

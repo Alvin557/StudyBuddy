@@ -1,8 +1,7 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void showExitPopup(context, {message = "Do you want to exit an app"}) {
+void showExitPopup(context, {message = "Do you want to exit an app?"}) {
   showDialog<void>(
     //show confirm dialogue
     //the return value will be from "Yes" or "No" options

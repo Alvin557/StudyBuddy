@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../const/colors.dart';
@@ -9,8 +10,12 @@ class AddFlashCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference flashCard =
-        FirebaseFirestore.instance.collection("flashcard");
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    DocumentReference<Map<String, dynamic>> flashCard = FirebaseFirestore
+        .instance
+        .collection("flashcard")
+        .doc(auth.currentUser!.uid);
     final titleTextController = TextEditingController();
     final descriptionTextController = TextEditingController();
 
@@ -106,7 +111,7 @@ class AddFlashCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        flashCard.add({
+                        flashCard.collection("individualFlashCard").add({
                           "title": titleTextController.text,
                           "description": descriptionTextController.text,
                           "favorite": false

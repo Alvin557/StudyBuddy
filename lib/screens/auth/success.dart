@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../const/route_const.dart';
-import '../showExitPopup.dart';
+import '../show_exit_popup.dart';
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});
